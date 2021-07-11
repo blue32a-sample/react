@@ -1,74 +1,49 @@
+import React from 'react';
 import ReactDOM from 'react-dom';
 
-function Avatar(props) {
-  return (
-    <img className="Avatar"
-      src={props.user.avatarUrl}
-      alt={props.user.name}
-    />
-  );
-}
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
 
-function UserInfo(props) {
-  return (
-    <div className="UserInfo">
-      <Avatar user={props.user} />
-      <div className="UserInfo-name">
-        {props.user.name}
-      </div>
-    </div>
-  );
-}
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    );
+  }
 
-function Comment(props) {
-  return (
-    <div className="Comment">
-      <UserInfo user={props.author} />
-      <div className="Comment-text">
-        {props.text}
-      </div>
-      <div className="Comment-date">
-        {formatDate(props.date)}
-      </div>
-    </div>
-  );
-}
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
 
-function formatDate(date) {
-  return date;
+  tick() {
+    // Wrong
+    // this.state.date = new Date();
+
+    // Correct
+    this.setState({
+      date: new Date()
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    )
+  }
 }
 
 function App() {
-  const sara = {
-    user: 'Sara',
-    avatarUrl: 'https://placehold.jp/3d4070/ffffff/100x100.png?text=Sara'
-  };
-  const cahal = {
-    user: 'Cahal',
-    avatarUrl: 'https://placehold.jp/169e44/ffffff/100x100.png?text=Cahal'
-  };
-  const edite = {
-    user: 'Edite',
-    avatarUrl: 'https://placehold.jp/e38854/ffffff/100x100.png?text=Edite'
-  };
-
   return (
     <div>
-      <Comment
-        text="Hello Sara!"
-        date="2021-07-11"
-        author={sara}
-      />
-      <Comment
-        text="Hello Cahal!"
-        date="2021-07-12"
-        author={cahal}
-      />
-      <Comment
-        text="Hello Edite!"
-        date="2021-07-13"
-        author={edite}
-      />
+      <Clock />
+      <Clock />
+      <Clock />
     </div>
   );
 }
